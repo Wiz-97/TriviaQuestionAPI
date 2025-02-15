@@ -10,7 +10,7 @@ struct TriviaListView: View {
                     ForEach(viewModel.questions) { question in
                         NavigationLink(destination: TriviaDetailView(question: question)) {
                             VStack(alignment: .leading) {
-                                Text(question.category)
+                                Text(question.decodedCategory)
                                     .font(.headline)
                                     .foregroundColor(.blue)
                                 
@@ -46,7 +46,6 @@ struct TriviaListView: View {
         }
     }
 }
-
 #Preview {
     TriviaListView()
 }

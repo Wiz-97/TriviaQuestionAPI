@@ -20,7 +20,11 @@ struct TriviaQuestion: Codable, Identifiable {
         case incorrectAnswers = "incorrect_answers"
     }
 
-    // Decode HTML Entities for the question and answers
+    // Decode HTML Entities for all necessary properties
+    var decodedCategory: String {
+        category.htmlDecoded()  // FIX: Apply decoding to category
+    }
+    
     var decodedQuestion: String {
         question.htmlDecoded()
     }
@@ -47,11 +51,14 @@ struct TriviaResponse: Codable {
 // Extension for decoding HTML entities
 extension String {
     func htmlDecoded() -> String {
-        guard let data = data(using: .utf8) else { return self }
+        guard let data = self.data(using: .utf8) else { return self }
         let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
             .documentType: NSAttributedString.DocumentType.html,
             .characterEncoding: String.Encoding.utf8.rawValue
         ]
-        return (try? NSAttributedString(data: data, options: options, documentAttributes: nil).string) ?? self
+        if let decoded = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
+            return decoded.string
+        }
+        return self
     }
 }

@@ -7,7 +7,7 @@ struct TriviaDetailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text(question.question)
+            Text(question.decodedQuestion)  // FIX: Use decodedQuestion
                 .font(.title2)
                 .bold()
             
@@ -16,19 +16,19 @@ struct TriviaDetailView: View {
                     selectedAnswer = answer
                     isAnswered = true
                 }) {
-                    Text(answer)
+                    Text(answer.htmlDecoded())  // FIX: Decode each answer
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(selectedAnswer == answer ? (answer == question.correctAnswer ? Color.green : Color.red) : Color.blue.opacity(0.3))
+                        .background(selectedAnswer == answer ? (answer == question.decodedCorrectAnswer ? Color.green : Color.red) : Color.blue.opacity(0.3))
                         .cornerRadius(10)
                         .foregroundColor(.black)
                 }
             }
 
             if isAnswered {
-                Text(selectedAnswer == question.correctAnswer ? "🎉 Correct!" : "❌ Wrong! Correct answer: \(question.correctAnswer)")
+                Text(selectedAnswer == question.decodedCorrectAnswer ? "🎉 Correct!" : "❌ Wrong! Correct answer: \(question.decodedCorrectAnswer)")
                     .font(.headline)
-                    .foregroundColor(selectedAnswer == question.correctAnswer ? .green : .red)
+                    .foregroundColor(selectedAnswer == question.decodedCorrectAnswer ? .green : .red)
             }
 
             Spacer()
