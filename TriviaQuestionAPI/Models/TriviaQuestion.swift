@@ -1,8 +1,8 @@
 import Foundation
 
-// TriviaQuestion struct
 struct TriviaQuestion: Codable, Identifiable {
-    let id = UUID()  // Unique identifier for SwiftUI lists
+    var id: String { "\(category)-\(question)" }
+    
     let category: String
     let type: String
     let difficulty: String
@@ -10,7 +10,6 @@ struct TriviaQuestion: Codable, Identifiable {
     let correctAnswer: String
     let incorrectAnswers: [String]
 
-    // Map API's JSON keys to our Swift properties
     enum CodingKeys: String, CodingKey {
         case category
         case type
@@ -20,9 +19,9 @@ struct TriviaQuestion: Codable, Identifiable {
         case incorrectAnswers = "incorrect_answers"
     }
 
-    // Decode HTML Entities for all necessary properties
+    // Decode HTML Entities for the question and answers
     var decodedCategory: String {
-        category.htmlDecoded()  // FIX: Apply decoding to category
+        category.htmlDecoded()
     }
     
     var decodedQuestion: String {
@@ -32,7 +31,7 @@ struct TriviaQuestion: Codable, Identifiable {
     var decodedCorrectAnswer: String {
         correctAnswer.htmlDecoded()
     }
-
+    
     var decodedIncorrectAnswers: [String] {
         incorrectAnswers.map { $0.htmlDecoded() }
     }
@@ -42,6 +41,7 @@ struct TriviaQuestion: Codable, Identifiable {
         (decodedIncorrectAnswers + [decodedCorrectAnswer]).shuffled()
     }
 }
+
 
 // TriviaResponse struct for decoding the entire response
 struct TriviaResponse: Codable {
